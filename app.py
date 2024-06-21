@@ -16,7 +16,7 @@ def webhook():
     data = request.json
     if 'message' in data:
         chat_id = data['message']['chat']['id']
-        send_game(chat_id, 'mad_world_survivors')  # Замените 'mad_world_survivors' на идентификатор вашей игры
+        send_game(chat_id, 'mad_world_survivors')
     return 'ok'
 
 def send_game(chat_id, game_short_name):
@@ -26,7 +26,8 @@ def send_game(chat_id, game_short_name):
         'game_short_name': game_short_name
     }
     response = requests.post(url, json=payload)
-    print(response.json())  # Для отладки
+    print(f"Payload: {payload}")  # Для отладки
+    print(f"Response: {response.json()}")  # Для отладки
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 8000))
