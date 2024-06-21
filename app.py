@@ -38,7 +38,7 @@ def handle_callback_query(callback_query):
     url = TELEGRAM_API_URL + 'answerCallbackQuery'
     payload = {
         'callback_query_id': query_id,
-        'url': f"https://t.me/{bot_username}?game={game_short_name}"
+        'url': "https://itch.io/embed-upload/10665163?color=000000"
     }
     response = requests.post(url, json=payload)
     print(f"Callback Payload: {payload}")  # Для отладки
