@@ -39,9 +39,12 @@ def handle_callback_query(callback_query):
         chat_id = callback_query['message']['chat']['id']
         game_short_name = callback_query['game_short_name']
         url = TELEGRAM_API_URL + 'answerCallbackQuery'
+        # Убедитесь, что TELEGRAM_BOT_USERNAME установлен правильно
+        if TELEGRAM_BOT_USERNAME is None or TELEGRAM_BOT_USERNAME == '':
+            raise ValueError("TELEGRAM_BOT_USERNAME is not set correctly.")
         payload = {
             'callback_query_id': query_id,
-            'url': f"https://t.me/{os.getenv('TELEGRAM_BOT_USERNAME')}?game={game_short_name}"
+            'url': f"https://t.me/{TELEGRAM_BOT_USERNAME}?game={game_short_name}"
         }
         response = requests.post(url, json=payload)
         print(f"Callback Payload: {payload}")  # Для отладки
