@@ -16,17 +16,14 @@ def webhook():
     data = request.json
     if 'message' in data:
         chat_id = data['message']['chat']['id']
-        send_inline_button(chat_id, 'Нажмите на кнопку ниже, чтобы запустить игру', 'Запустить игру', 'https://itch.io/embed-upload/10665163?color=000000')
+        send_game(chat_id, 'mad_world_survivors')  # Замените 'mad_world_survivors' на идентификатор вашей игры
     return 'ok'
 
-def send_inline_button(chat_id, text, button_text, button_url):
-    url = TELEGRAM_API_URL + 'sendMessage'
+def send_game(chat_id, game_short_name):
+    url = TELEGRAM_API_URL + 'sendGame'
     payload = {
         'chat_id': chat_id,
-        'text': text,
-        'reply_markup': {
-            'inline_keyboard': [[{'text': button_text, 'url': button_url}]]
-        }
+        'game_short_name': game_short_name
     }
     response = requests.post(url, json=payload)
     print(response.json())  # Для отладки
