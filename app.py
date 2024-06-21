@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '7383030976:AAF49Fo_8ZpMORFnQqapGtOH-BSKCM7Izyg')
+TELEGRAM_BOT_USERNAME = os.getenv('TELEGRAM_BOT_USERNAME', 'mad_world_survivors_bot')
 TELEGRAM_API_URL = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/'
 
 @app.route('/')
