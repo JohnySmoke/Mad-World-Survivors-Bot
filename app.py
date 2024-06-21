@@ -1,9 +1,10 @@
 from flask import Flask, request
 import requests
+import os
 
 app = Flask(__name__)
 
-TELEGRAM_TOKEN = '7383030976:AAF49Fo_8ZpMORFnQqapGtOH-BSKCM7Izyg'
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '7383030976:AAF49Fo_8ZpMORFnQqapGtOH-BSKCM7Izyg')
 TELEGRAM_API_URL = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/'
 
 @app.route('/webhook', methods=['POST'])
@@ -26,4 +27,5 @@ def send_message(chat_id, text, button_text, button_url):
     requests.post(url, json=payload)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    port = int(os.getenv('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
