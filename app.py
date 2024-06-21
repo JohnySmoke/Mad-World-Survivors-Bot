@@ -17,6 +17,8 @@ def webhook():
     if 'message' in data:
         chat_id = data['message']['chat']['id']
         send_game(chat_id, 'mad_world_survivors')
+    elif 'callback_query' in data:
+        handle_callback_query(data['callback_query'])
     return 'ok'
 
 def send_game(chat_id, game_short_name):
@@ -29,20 +31,18 @@ def send_game(chat_id, game_short_name):
     print(f"Payload: {payload}")  # Для отладки
     print(f"Response: {response.json()}")  # Для отладки
 
-    # Дополнительно, отправьте сообщение с кнопкой запуска игры
-    button_url = f"https://t.me/mad_world_survivors_bot?game={game_short_name}"
-    button_payload = {
-        'chat_id': chat_id,
-        'text': 'Нажмите на кнопку ниже, чтобы запустить игру',
-        'reply_markup': {
-            'inline_keyboard': [
-                [{'text': 'Запустить игру', 'url': button_url}]
-            ]
-        }
+def handle_callback_query(callback_query):
+    query_id = callback_query['id']
+    chat_id = callback_query['message']['chat']['id']
+    game_short_name = callback_query['game_short_name']
+    url = TELEGRAM_API_URL + 'answerCallbackQuery'
+    payload = {
+        'callback_query_id': query_id,
+        'url': f"https://t.me/{bot_username}?game={game_short_name}"
     }
-    button_response = requests.post(TELEGRAM_API_URL + 'sendMessage', json=button_payload)
-    print(f"Button Payload: {button_payload}")  # Для отладки
-    print(f"Button Response: {button_response.json()}")  # Для отладки
+    response = requests.post(url, json=payload)
+    print(f"Callback Payload: {payload}")  # Для отладки
+    print(f"Callback Response: {response.json()}")  # Для отладки
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 8000))
