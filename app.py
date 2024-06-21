@@ -44,7 +44,7 @@ def handle_callback_query(callback_query):
             raise ValueError("TELEGRAM_BOT_USERNAME is not set correctly.")
         payload = {
             'callback_query_id': query_id,
-            'url': f"https://t.me/{TELEGRAM_BOT_USERNAME}?game={game_short_name}"
+            'url': "https://itch.io/embed-upload/10665163?color=000000"
         }
         response = requests.post(url, json=payload)
         print(f"Callback Payload: {payload}")  # Для отладки
