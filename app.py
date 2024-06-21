@@ -41,7 +41,7 @@ def handle_callback_query(callback_query):
         url = TELEGRAM_API_URL + 'answerCallbackQuery'
         payload = {
             'callback_query_id': query_id,
-            'url': f"https://t.me/{os.getenv('mad_world_survivors_bot')}?game={game_short_name}"
+            'url': f"https://t.me/{os.getenv('TELEGRAM_BOT_USERNAME')}?game={game_short_name}"
         }
         response = requests.post(url, json=payload)
         print(f"Callback Payload: {payload}")  # Для отладки
