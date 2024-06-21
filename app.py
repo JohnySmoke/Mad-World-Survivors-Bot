@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-TELEGRAM_TOKEN = '7383030976:AAF49Fo_8ZpMORFnQqapGtOH-BSKCM7Izyg'
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '7383030976:AAF49Fo_8ZpMORFnQqapGtOH-BSKCM7Izyg')
 TELEGRAM_API_URL = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/'
 
 @app.route('/')
@@ -14,6 +14,7 @@ def index():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
+    print(f"Webhook received: {data}")  # Отладка: вывод полученных данных
     if 'message' in data:
         chat_id = data['message']['chat']['id']
         send_game(chat_id, 'mad_world_survivors')
@@ -32,17 +33,22 @@ def send_game(chat_id, game_short_name):
     print(f"Response: {response.json()}")  # Для отладки
 
 def handle_callback_query(callback_query):
-    query_id = callback_query['id']
-    chat_id = callback_query['message']['chat']['id']
-    game_short_name = callback_query['game_short_name']
-    url = TELEGRAM_API_URL + 'answerCallbackQuery'
-    payload = {
-        'callback_query_id': query_id,
-        'url': "https://itch.io/embed-upload/10665163?color=000000"
-    }
-    response = requests.post(url, json=payload)
-    print(f"Callback Payload: {payload}")  # Для отладки
-    print(f"Callback Response: {response.json()}")  # Для отладки
+    try:
+        query_id = callback_query['id']
+        chat_id = callback_query['message']['chat']['id']
+        game_short_name = callback_query['game_short_name']
+        url = TELEGRAM_API_URL + 'answerCallbackQuery'
+        payload = {
+            'callback_query_id': query_id,
+            'url': f"https://t.me/{os.getenv('mad_world_survivors_bot')}?game={game_short_name}"
+        }
+        response = requests.post(url, json=payload)
+        print(f"Callback Payload: {payload}")  # Для отладки
+        print(f"Callback Response: {response.json()}")  # Для отладки
+    except KeyError as e:
+        print(f"KeyError: {e}")  # Для отладки
+    except Exception as e:
+        print(f"Exception: {e}")  # Для отладки
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 8000))
