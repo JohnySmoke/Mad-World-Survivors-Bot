@@ -30,7 +30,7 @@ def send_game(chat_id, game_short_name):
     print(f"Response: {response.json()}")  # Для отладки
 
     # Дополнительно, отправьте сообщение с кнопкой запуска игры
-    button_url = "https://itch.io/embed-upload/10665163?color=000000"
+    button_url = f"https://t.me/mad_world_survivors_bot?game={game_short_name}"
     button_payload = {
         'chat_id': chat_id,
         'text': 'Нажмите на кнопку ниже, чтобы запустить игру',
